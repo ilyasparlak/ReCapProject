@@ -17,7 +17,8 @@ namespace ConsoleUI
         private static void BrandTest()
         {
             BrandManager brandManager = new BrandManager(new EfBrandDal());
-            foreach (var brand in brandManager.GetAllBrands())
+            var result = brandManager.GetAllBrands();
+            foreach (var brand in result.Data)
             {
                 Console.WriteLine(brand.BrandName);
             }
@@ -26,7 +27,8 @@ namespace ConsoleUI
         private static void ColorTest()
         {
             ColorManager colorManager = new ColorManager(new EfColorDal());
-            foreach (var color in colorManager.GetAllColors())
+            var result = colorManager.GetAllColors();
+            foreach (var color in result.Data)
             {
                 Console.WriteLine(color.ColorName);
             }
