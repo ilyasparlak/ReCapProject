@@ -5,6 +5,8 @@ using System.Text;
 using Entities.Concrete;
 using DataAccess.Abstract;
 using Entities.DTOs;
+using Core.Utilities.Results;
+using Business.Constants;
 
 namespace Business.Concrete
 {
@@ -17,24 +19,61 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public List<Car> GetAll()
+        public IResult Add(Car car)
         {
-            return _carDal.GetAll();
+            if (car.CarName.Length>2)
+            {
+                if (car.DailyPrice>0)
+                {
+                    _carDal.Add(car);
+                    return new SuccessResult(Messages.CarAdded);
+                }
+                else
+                {
+                    return new ErrorResult(Messages.CarPriceInvalid);
+                }
+            }
+            else
+            {
+                return new ErrorResult(Messages.CarNameInvalid);
+            }
         }
 
-        public List<Car> GetAllByBrandId(int id)
+        public IResult Delete(Car car)
         {
-            return _carDal.GetAll(c => c.BrandId == id);
+            _carDal.Delete(car);
+            return new SuccessResult();
         }
 
-        public List<Car> GetAllByColorId(int id)
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll(c => c.ColorId == id);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
-        public List<CarDetailDto> GetProductDetails()
+        public IDataResult<List<Car>> GetAllByBrandId(int id)
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
+        }
+
+        public IDataResult<List<Car>> GetAllByColorId(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id));
+        }
+
+        public IDataResult<Car> GetById(int id)
+        {
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.BrandId == id));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetProductDetails()
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
+        }
+
+        public IResult Update(Car car)
+        {
+            _carDal.Update(car);
+            return new SuccessResult();
         }
     }
 }

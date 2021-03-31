@@ -35,10 +35,18 @@ namespace ConsoleUI
         private static void CarTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetProductDetails())
+            var result = carManager.GetProductDetails();
+            if (result.Success==true)
             {
-                Console.WriteLine(car.CarName+" / "+car.ColorName+" / "+car.BrandName);
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.CarName + " / " + car.ColorName + " / " + car.BrandName);
+                }
             }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }            
         }
     }
 }
