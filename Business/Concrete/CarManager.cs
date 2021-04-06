@@ -7,6 +7,9 @@ using DataAccess.Abstract;
 using Entities.DTOs;
 using Core.Utilities.Results;
 using Business.Constants;
+using FluentValidation;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
 
 namespace Business.Concrete
 {
@@ -21,26 +24,14 @@ namespace Business.Concrete
 
         public IResult Add(Car car)
         {
-            if (car.CarName.Length>2)
-            {
-                if (car.DailyPrice>0)
-                {
-                    _carDal.Add(car);
-                    return new SuccessResult(Messages.CarAdded);
-                }
-                else
-                {
-                    return new ErrorResult(Messages.CarPriceInvalid);
-                }
-            }
-            else
-            {
-                return new ErrorResult(Messages.CarNameInvalid);
-            }
+            
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
         }
 
         public IResult Delete(Car car)
         {
+            ValidationTool.Validate(new CarValidator(), car);
             _carDal.Delete(car);
             return new SuccessResult();
         }
