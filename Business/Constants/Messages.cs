@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -18,5 +20,12 @@ namespace Business.Constants
         public static string CarImagesListed;
         public static string CarImageUpdated;
         public static string CarImageLimitExceded;
+        public static string AuthorizationDenied = "Yetkiniz yok";
+        public static string UserRegistered;
+        public static string UserNotFound;
+        public static string PasswordError;
+        public static string SuccessfulLogin;
+        public static string UserAlreadyExists;
+        public static string AccessTokenCreated;
     }
 }
